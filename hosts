@@ -1,6 +1,4 @@
 [local]
 localhost
 [testserver]
-ec2-18-208-107-91.compute-1.amazonaws.com
-ec2-34-203-243-231.compute-1.amazonaws.com
-ec2-54-82-246-220.compute-1.amazonaws.com
+ec2-52-91-70-150.compute-1.amazonaws.com

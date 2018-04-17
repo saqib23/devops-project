@@ -97,14 +97,15 @@
 
     # Set up new site
     - name: configuring nginx site directory
-      command: rm -rf /var/www/html/index.nginx-debian.html
+      command: rm -rf /etc/nginx/sites-enabled/default
       sudo: yes
 
     - name: adding webpage 
-      template: src=templates/index.html dest=/var/www/html/index.html
-
+      template: src=templates/index.html dest=/var/www/index.html
+      notify: restart nginx
+      sudo: yes
     - name: configure nginx site config file
-      template: src=templates/nginx_site.conf.j2 dest=/etc/nginx/conf.d/nginx_site.conf owner=root group=root mode=0644
+      template: src=templates/default dest=/etc/nginx/sites-enabled/default owner=root group=root mode=0644
       notify: restart nginx
       sudo: yes
     # Generate a self signed certificate for the web service
@@ -122,21 +123,21 @@
       notify: restart nginx
       sudo: yes
     # Patch the nginx config file to enable SSL
-    - name: enabling ssl
-      replace: 
-        dest: /etc/nginx/conf.d/nginx_site.conf
-        regexp: '{{ item.regexp }}'
-        replace: '{{ item.replace }}'
-        owner: root
-        group: root
-        mode: 644
-      with_items:
-        - { regexp: '#listen', replace: 'listen' }
-        - { regexp: '#ssl_certificate_key', replace: 'ssl_certificate_key' }
-        - { regexp: '#ssl_certificate', replace: 'ssl_certificate' }
-        - { regexp: '#ssl', replace: 'ssl' }
-      notify: restart nginx
-      sudo: yes
+#    - name: enabling ssl
+#      replace: 
+#        dest: /etc/nginx/conf.d/nginx_site.conf
+#        regexp: '{{ item.regexp }}'
+#        replace: '{{ item.replace }}'
+#        owner: root
+#        group: root
+#        mode: 644
+#      with_items:
+#        - { regexp: '#listen', replace: 'listen' }
+#        - { regexp: '#ssl_certificate_key', replace: 'ssl_certificate_key' }
+#        - { regexp: '#ssl_certificate', replace: 'ssl_certificate' }
+#        - { regexp: '#ssl', replace: 'ssl' }
+#      notify: restart nginx
+#      sudo: yes
     handlers:
      - name: restart nginx
        service: name=nginx state=restarted
