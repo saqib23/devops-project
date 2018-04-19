@@ -6,6 +6,8 @@ Steps :
       3. Configure key’s in anisble config file as follows : 
           private_key_file = /home/ubuntu/<your_private_key.pem>
       4. Now move to folder devops-project and execute command 
-ansible-playbook -i hosts ec2-nginx.yml
+ansible-playbook -i hosts ec2-nginx.yml -vvv
+
+Ansible : It would create the instance and install NGINX while a bash script is called within ansible over that created instance which would trigger and generate self-signed SSL certificate. bash script is named as `cert_creation.sh` which accepts arguments as --self for execution with domain name and location which is passed in ansible.
 
 ```
